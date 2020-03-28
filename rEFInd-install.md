@@ -83,11 +83,11 @@ your copy of the appropriate microcode image file - `intel-ucode.img` or `amd-uc
 from a generated copy (rather than the sample) refind_linux.conf, it will already contain the identifiers for
 your boot UUID. Edit to match this example for an amd-ucode.img system:
 
-'
+```
 "Boot using default options"     "root=PARTUUID=XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX rw add_efi_memmap initrd=/boot/amd-ucode.img initrd=/boot/initramfs-%v.img"
 "Boot using fallback initramfs"  "root=PARTUUID=XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX rw add_efi_memmap initrd=/boot/amd-ucode.img initrd=/boot/initramfs-%v-fallback.img"
 "Boot to terminal"               "root=PARTUUID=XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX rw add_efi_memmap initrd=/boot/amd-ucode.img initrd=/boot/initramfs-%v.img systemd.unit=multi-user.target"
-`
+```
 You could add `quiet` after rw, if you don't want to see the boot messages, but I like to know what
 happened in the background, so I didn't use it here.
 
