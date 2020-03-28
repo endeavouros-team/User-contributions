@@ -102,7 +102,7 @@ There are a LOT of other capabilities of  **rEFInd**  that I haven't touched on 
 theming can be changed, for example. An example shown in the documentation puts your contact
 information on the boot screen, should you be running a laptop and want it back if lost etc. Many other things
 are built in for handling special cases as well. On top of that, there are other ways of achieving the same
-things we have set up here, but I think these are the easiest I've found so far. I find it easily the easiest 
+things we have set up here, but I think these are the easiest I've found so far. I find it the simplest 
 way to run a machine with 5 distros on it!
 
 One of the things I appreciate is that it can pick up and display boot options for USB sticks that have
