@@ -3,7 +3,7 @@
 by Freebird54
 
 **rEFInd**  is a boot manager, forked and reworked from the EFI boot control program
-called  **rEFIt** . It allows the easy control of multi-boot systems, regardless of what
+called  **rEFIt**. It allows the easy control of multi-boot systems, regardless of what
 those systems might be.
 
 Note: It will simplify your life, and the setup, if SECURE BOOT has been disabled
