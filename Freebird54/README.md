@@ -1,1 +1,1 @@
-[](wiki-pt2.html)
+![](wiki-pt2.html)
