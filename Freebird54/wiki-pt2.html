@@ -1,0 +1,290 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>wiki-pt2</title>
+  </head>
+  <body>
+    <h2 align="center"><u>rEFInd - A Case Study <br>
+      </u></h2>
+    <p>As has been noted many times, by many people, in Linux there is
+      always more than one way to skin a cat. Good... that persuaded my
+      furry "keyboard assistant" to leave the scene and allow me to type
+      unhampered. In this case, what we aimed to accomplish was a way to
+      try ALL the different Desktop Environments (DE's) that are
+      available from the <i><b>EndeavourOS</b></i> installer. Yes, all
+      eight. The final result is visible here:<br>
+      <img src="eos-screen.jpg"
+        alt="EOS Screenshot" height="1080" width="1920"><br>
+    </p>
+    <p>As we go along I will detail the choices I made, the
+      configurations required, and hopefully the reasons for the choices
+      as well. <b><i>rEFInd</i></b> is extremely flexible, and nearly
+      everything is configurable, even what shows up on screen.<br>
+    </p>
+    <p>To start with, the first choice was to go with <i><b>rEFInd</b></i>
+      to manage the different DE's, rather than jam them all into one
+      installation. The resulting potential for confusion and trouble
+      that different setups, working in the same space, (and sometimes
+      on the same config files) is significant. We need some partitions
+      to work with to enable this, though. On the machine I am doing
+      this on, I have a small SSD, a medium-sized spinner (mechanical
+      hard drive), and a larger spinner. What I did was to use GParted
+      create the UEFI partition on the SSD, split the medium drive into
+      8 more-or-less even size partitions for each DE, and assign the
+      larger drive to data storage. After all else has been done, I will
+      put an extra DE on the SSD for speed, and as the default choice to
+      get work done on this system. Here is the setup I ended up with
+      (all partitions formatted as shown to save time and thought
+      later):<br>
+    </p>
+    <img src="gparted-1.png" alt="gparted sda"
+      height="532" width="911"><br>
+    The most important partition here is the <b>fat32</b> partition
+    (recommended size as seen) that will end up on /boot/efi for ALL
+    systems. I formatted it when setting up, so as not to have anything
+    else to keep track of while installing all the different systems!
+    You can see that I also created a swap partition - on this machine I
+    have 4Gb memory, so I could choose to hibernate with this setup. Of
+    more importance to note is that each partition has a filesystem
+    label chosen and entered - which makes it easy to tell what you did
+    with each of them when you go back later!<br>
+    <img src="gparted-2.png" alt="gparted sdb"
+      height="528" width="914"><br>
+    Here you can see all 8 partitions for DE's - along with a small one
+    for holding timeshift backups. Again - note the filesystem labels -
+    they will be very important when actually running this setup. And,
+    finally:<br>
+    <img src="gparted-3.png" alt="gparted sdc"
+      height="528" width="914"><br>
+    Very straightforward - and a great way to keep ALL your data
+    organized, as well as accessible from all your different DE's. My
+    habit is to create the standard directories on this (Documents,
+    Downloads, Music, Pictures, Videos) along with others that come up
+    often (Books, Calibre Library, Public, Templates) - and set up soft
+    links to them <b>all </b>from each DE. (example command from ~ on
+    any DE:&nbsp; <i><b><br>
+        ln -s /mnt/data/Downloads Downloads. <br>
+        <br>
+      </b></i>Now that the basic working framework has been assembled,
+    we can load all the DE's. On each install, remember to select the
+    small fat32 partition, KEEP (rather than format) and set the mount
+    point to <i><b>/boot/efi</b></i>. The only other choice to make is
+    on the other drive (sdb) - select the partition that will be the<i><b>
+        / </b></i>(root) of the particular system you are installing.
+    Hopefully you made notes as to which was to go on which! (if you
+    have an aversion to paper, you could note it on your phone :) It is
+    not necessary to format these either, if you formatted them when you
+    created them. Alternate filesystems are beyond the scope of this
+    discussion - after all, more than likely these are test beds, not
+    daily drivers!<br>
+    <br>
+    I have found the installer to be very reliable, and got through the
+    entire process with no mis-steps. Hopefully you have too - but if
+    not, a redo of one install at this point is not a huge problem. If
+    you select one of the DE's to serve as the first, (most easy is to
+    utilize the latest one - as its grub will be the one to show up on
+    the reboot) - let it load up, and install rEFInd on it (as per the
+    wiki - basically just <br>
+    <font color="#cc0000"><b><code><br>
+          yay refind</code></b></font> <br>
+    <br>
+    and <br>
+    <font color="#cc0000"><b><code><br>
+          refind-install</code></b></font><br>
+    <br>
+    At this point you could check that each of the DE's boots from <i><b>rEFInd</b></i>
+    directly. At this point I should mention a possible problem,
+    especially with older machines. Some of the earlier UEFI BIOS's have
+    insufficient room in their NVRAM for so many entries!&nbsp; You can
+    tell this has happened because not all of the entries you would
+    expect will show up, even if you follow the arrows to see them all.
+    Luckily, <i><b>rEFInd </b></i>has a way around this problem too.
+    If you edit the file found at<br>
+    &nbsp;<i><b>/boot/efi/EFI/refind/refind.conf</b></i> , an entry
+    reading <i><b>use_nvram false</b></i> will solve the difficulty.
+    (you can just uncomment the existing entry if you choose).<br>
+    <br>
+    On a previous wiki entry, I described how to copy the <b>EndeavourOS
+
+
+
+
+
+    </b>logo into the <b>EndeavourOS</b> directory of <i><b>/boot/efi/EFI/refind/icons</b></i>,
+    but if you try that now you will find the problem with this simple
+    solution - you will have a row of identical icons! Tuxes if you
+    haven't tried to change anything, or <b>EndeavourOS</b> logos if
+    you have. Obviously this is confusing, so we must utilize another
+    way. You will start to&nbsp; notice the value of having clearly
+    identifiable partition filesystem labels now, as <i><b>rEFInd</b></i>
+    shows what file and location each entry will be booting with as you
+    highlight it. In the interests of keeping things simple, what I
+    suggest is to boot each DE in turn, locate a suitable logo icon for
+    it - preferably in .png format - (easily done online, often in
+    WikiMedia commons) and copy it to the filename of your boot file. An
+    example would be<br>
+    <font color="#cc0000"><b><code><br>
+          sudo cp ~/Downloads/cinnamon-logo.png /boot/vmlinuz-linux.png</code></b></font><br>
+    <br>
+    obviously substituting the actual name and location of the logo icon
+    file you found for the first part of that command. When this is
+    complete you should be able to boot any of them from <i><b>rEFInd</b></i>
+    without a problem. But - there are still a few things to do for
+    perfection.<br>
+    <br>
+    If you have an Intel or an AMD processor, there are microcode image
+    files that should be loaded when you start up. As far as I can tell,
+    the installer includes them automatically on installation, but they
+    can be installed the normal way if you don't have them. The easiest
+    way to ensure they are loaded correctly is to do the following - 8
+    times! :)<br>
+    First - I am going to assume that you have a place to store things
+    that will be accessible from all DE's. In my case, the standard
+    directories are on a data drive that all can see, but a thumb drive
+    will do fine as well. You will need the UUID's of the root /
+    partition from each DE system. I suggest that you:<br>
+    <font color="#cc0000"><code><br>
+        sudo blkid &gt; UUIDFile</code></font><br>
+    <br>
+    which will create a listing you can refer back to on each system as
+    you create the entries. Copy this onto whatever common drive you
+    have. What is needed is a configuration file, <i><b>refind-linux.conf</b></i>,
+    to be located in the same directory as your boot file (and logo
+    file). Here is a copy from one of mine:<br>
+    <br>
+    <code> <font color="#cc0000">"Boot using default
+        options"&nbsp;&nbsp;&nbsp;&nbsp;
+        "root=UUID=b46c18cf-fa73-4255-b1b0-920904264e6b rw quiet
+        add_efi_memmap initrd=/boot/amd-ucode.img
+        initrd=/boot/initramfs-%v.img"<br>
+        "Boot using fallback initramfs"&nbsp;
+        "root=UUID=b46c18cf-fa73-4255-b1b0-920904264e6b rw
+        add_efi_memmap initrd=/boot/amd-ucode.img
+        initrd=/boot/initramfs-%v-fallback.img"<br>
+        "Boot to
+        terminal"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+        "root=UUID=b46c18cf-fa73-4255-b1b0-920904264e6b rw
+        add_efi_memmap initrd=/boot/amd-ucode.img
+        initrd=/boot/initramfs-%v.img systemd.unit=multi-user.target"<br>
+      </font></code><font color="#cc0000"> </font><br>
+    What is needed is to substitute your root UUID (for the current
+    system) into a copy of this config file - after ensuring that the
+    correct micocode file is referenced. If you have an intel the the
+    file is <i><b>intel-ucode.img </b></i>not <i><b>amd-ucode.img </b></i>and
+
+
+
+
+
+    the entry should be modified accordingly. There are a number of ways
+    (as always) to get the right UUID into the copy of the config file,
+    including the file created earlier (UUIDFile) into your text editor,
+    enter a few blank lines, then paste in this example
+    refind-linux.conf, and carefully copy paste the correct UUID=
+    portion over top of the existing entry, remove the excess lines
+    (everything NOT from the example above!), and save as
+    /boot/refind-linux.conf. This needs to be done (carefully) for all 8
+    systems. If you get a UUID wrong - it will NOT boot!<br>
+    <br>
+    Now we come to the configuration of <i><b>rEFInd</b></i> itself -
+    that only has to be done once for all 8 systems to recognize it.
+    Remember, the EFI directory is visible and mounted on<b> /boot/efi/
+    </b>in ALL systems! The file to alter is<i><b>
+        /boot/efi/EFI/refind/refind.conf. </b></i>The entries we make
+    will enable the refind-linux.conf files to operate correctly, speed
+    up the <i><b>rEFInd</b></i> scan while booting, stop showing the
+    various grub loaders, and, optionally, change the appearance of <i><b>rEFInd</b></i>
+    to better suit.<br>
+    <h4>1. Enable the <b>refind-linux.conf</b> entries</h4>
+    You may have noticed that the <b>refind-linux.conf</b> entries
+    contained a <b> %v</b> sequence. This allows for version info to
+    change, and still be properly recognized. The entry needed is:<br>
+    <font color="#cc0000"><code><br>
+        extra_kernel_version_strings
+        linux-hardened,linux-zen,linux-lts,linux</code></font><br>
+    <br>
+    This is commented out in the original refind.conf file - we need it
+    to be active<br>
+    <h4>2. Change the directories that get scanned.</h4>
+    The relevant entry here is <br>
+    <font color="#cc0000"><code><br>
+        dont_scan_dirs ESP:/EFI</code></font><br>
+    <br>
+    You can add others you DON'T want scanned if needed, but it removes
+    the grub loaders from view for me.<br>
+    <h4>3. Change the banner:</h4>
+    The default banner is the <i><b>rEFInd</b></i> logo at the top of
+    the screen. However there are a few tricky bits about this. This is
+    a small file, but the program uses the colour setting of the top
+    left pixel as the background for the rest of the screen. SO - to get
+    a grey background, you could load the file <i><b>
+        /usr/share/refind/refind_banner.png </b></i>into a paint
+    program, change only the top left pixel to the shade of grey you
+    want, and then save. If you make an entry in refind.conf to load
+    this new banner<br>
+    <font color="#cc0000"><code><br>
+        banner newbannername</code></font><br>
+    <br>
+    then that will do the job. The banner, however, can also be a
+    full-screen image if you want. In this case, the usual banner will
+    not be seen, unless you integrate it with a paint program into
+    whatever image you choose to display instead. In my setup, I use an
+    image called eos-empty.png - which gives me the look seen in the
+    screen shot at the beginning of this case study.<br>
+    <h4>4. Change icon sizes:</h4>
+    When I first got this set up, there was only room on the screen for
+    6 icons - I run with 9! While it worked fine as is, I decided I
+    wanted them all visible from the start. Depending on your
+    resolution, this may not be needed (they fit fine on 3840x2160 - not
+    so much on 800x600!). Fortunately <i><b>rEFInd </b></i>has a way
+    to hadle this too.<br>
+    There are entries for small_icon_size and big_icon_size ion the
+    file, followed by a single number (the icons are square, only 1
+    entry is needed). Default sizes are 256 for big, and 96 for small -
+    set them as needed to scale them down. Big icons are main logos,
+    small are the tools underneath.<br>
+    <br>
+    This completes the setup I am using, but more can be adjusted if
+    needed - the screen resolution can be specified (maybe - hardware
+    dependent), the mouse might be possible to enable, touch might be
+    possible to enable - if present. There is even a text-only mode, but
+    I haven't tried it. From here it is up to you how much you do to
+    alter/improve things - but you should have picked up some tips that
+    will help you on your way.<br>
+    <br>
+    It may be important to note that the details of this case study only
+    apply reliably to EndeavourOS. Many other distros follow the same
+    methods, but some do not. If you are adding a different Arch based
+    system, the main thing to look out for is that boot files (and thus
+    the logos and the refind-linux.conf) may be located elsewhere -
+    perhaps in the root. In that case, the refind-linux.conf entries
+    would need to be changed to reflect the new path to boot and .img
+    files. If another distro is added - keep in mind that many of them
+    integrate the microcode in different ways, and the refind-linux.conf
+    would not need to load them. Looking through the <br>
+    grub entries generated by an install of this other system should
+    tell you what is needed to successfully boot. Another entry that may
+    come up is:<br>
+    <font color="#cc0000"><code><br>
+        resume=UUID={uuid of swap file}</code></font><br>
+    <br>
+    which would be there to enable hibernation. This would be added to
+    the refind-linux.conf file as well. There is much more to the
+    capabilities and special-case handling of <b><i>rEFInd</i></b>,
+    especially for handling WIndows and Mac, but those details are best
+    left to the main documentation at:<br>
+    <br>
+    <a href="https://rodsbooks.com/refind"><code>https://rodsbooks.com/refind</code></a><br>
+    <br>
+    and to the Archwiki entries that apply.<br>
+    <br>
+    <font color="#6666cc">Freebird54</font><br>
+  </body>
+</html>
