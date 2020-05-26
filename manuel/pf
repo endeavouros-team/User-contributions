@@ -17,7 +17,7 @@ Options() {
             a) prog="yay --aur" ;;
             o) prog="yay --repo" ;;
             h) Usage ; exit 0 ;;
-            *) DIE "unsupport option '$opt'" ;;
+            *) DIE "unsupported option" ;;
         esac
     done
 }
