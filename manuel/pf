@@ -1,0 +1,60 @@
+#!/bin/bash
+
+# Find packages using several search strings. All search strings must match.
+
+DIE() {
+    echo "Error: $1" >&2
+    echo "" >&2
+    Usage
+    exit 1
+}
+
+Options() {
+    local opt
+    OPTIND=1
+    while getopts aoh opt ; do
+        case "$opt" in
+            a) prog="yay --aur" ;;
+            o) prog="yay --repo" ;;
+            h) Usage ; exit 0 ;;
+            *) DIE "unsupport option '$opt'" ;;
+        esac
+    done
+}
+
+Usage() {
+    local progname="$(basename "$0")"
+    cat <<EOF >&2
+$progname searches packages with given search string(s) (all must match).
+Search is case insensitive.
+By default, both official and AUR packages are searched.
+
+Usage: $progname [options] string(s)
+   string      Search word
+   options:
+        -a     AUR packages only
+        -o     official packages only
+        -h     this help
+
+Examples:
+   $progname pdf cups
+   $progname -a pdf cups
+   $progname -o pdf cups
+EOF
+}
+
+pkgfind()
+{
+    local prog=yay
+    local arg cmd
+    Options "$@"
+    shift $((OPTIND-1))
+    test -n "$1" || DIE "no search string given"
+    cmd=($prog -S)
+    for arg in "$@" ; do
+        cmd+=(-s "$arg")
+    done
+    "${cmd[@]}"
+}
+
+pkgfind "$@"
