@@ -137,9 +137,9 @@ is needed is a configuration file, ***refind-linux.conf***, to be
 located in the same directory as your boot file (and logo file). Here is
 a copy from one of mine:
 ```
-"Boot using default options"     "root=UUID=b46c18cf-fa73-4255-b1b0-920904264e6b rw quiet   add_efi_memmap initrd=/boot/amd-ucode.img         initrd=/boot/initramfs-%v.img"
-"Boot using fallback initramfs"  "root=UUID=b46c18cf-fa73-4255-b1b0-920904264e6b rw         add_efi_memmap initrd=/boot/amd-ucode.img         initrd=/boot/initramfs-%v-fallback.img"
-"Boot to terminal"               "root=UUID=b46c18cf-fa73-4255-b1b0-920904264e6b rw         add_efi_memmap initrd=/boot/amd-ucode.img         initrd=/boot/initramfs-%v.img systemd.unit=multi-user.target"
+"Boot using default options"     "root=UUID=b46c18cf-fa73-4255-b1b0-920904264e6b rw quiet   add_efi_memmap initrd=\boot\amd-ucode.img         initrd=\boot\initramfs-%v.img"
+"Boot using fallback initramfs"  "root=UUID=b46c18cf-fa73-4255-b1b0-920904264e6b rw         add_efi_memmap initrd=\boot\amd-ucode.img         initrd=\boot\initramfs-%v-fallback.img"
+"Boot to terminal"               "root=UUID=b46c18cf-fa73-4255-b1b0-920904264e6b rw         add_efi_memmap initrd=\boot\amd-ucode.img         initrd=\boot\initramfs-%v.img systemd.unit=multi-user.target"
 ```
 What is needed is to substitute your root UUID (for the current system)
 into a copy of this config file - after ensuring that the correct
