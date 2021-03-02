@@ -16,7 +16,9 @@ Be sure to boot in UEFI mode!<br>
 You can check UEFI mode with command
 ```
 ls /sys/firmware/efi/efivars
-# alternative command: efivar --list
+# alternative commands:
+# sudo dmesg | grep -i EFI
+# efivar --list
 ```
 If it shows many files and no errors, system is in UEFI mode.
 
