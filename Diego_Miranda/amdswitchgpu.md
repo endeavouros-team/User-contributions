@@ -1,6 +1,6 @@
-I needed the switcheero package and activate it basically
+AMD igpu dgpu hybrid handling needed the switcheero package and activate it basically..
 
-And some xrandr configs..
+And some xrandr commands
 
 Switcheroo-control:
 
@@ -14,7 +14,7 @@ aur/switcheroo-control 2.5-3 (+38 2.96)
     
 https://gitlab.freedesktop.org/hadess/switcheroo-control
 
-`sudo systemctl enable switcheroo-control.service`
+`sudo systemctl enable --now switcheroo-control.service`
 
 
 `Xrandr --lisproviders`
