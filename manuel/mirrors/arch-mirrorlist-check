@@ -1,0 +1,32 @@
+#!/bin/bash
+
+# Show which Arch mirrors present at your current mirrorlist
+# cannot be found in the latest updated mirrorlist (a .pacnew file).
+
+Main()
+{
+    local list_current=/etc/pacman.d/mirrorlist
+    local list_new="$list_current.pacnew"
+
+    if [ -r "$list_new" ] ; then
+        local mirrors_current mirrors_new mirror
+        
+        local mirrors_removed=()
+
+        readarray -t mirrors_current <<< $(cat "$list_current" | grep "^[ ]*Server[ ]*=[ ]*" | awk '{print $NF}')
+        for mirror in "${mirrors_current[@]}" ; do
+            if ! grep "$mirror" "$list_new" >& /dev/null ; then
+                mirrors_removed+=("$mirror")
+            fi
+        done
+        if [ ${#mirrors_removed[@]} -gt 0 ] ; then
+            printf "\nWarning: your Arch mirrorlist $list_current includes mirrors:\n"
+            printf "%s\n" "${mirrors_removed[@]}" | sed 's|^|    |'
+            printf "which do not exist in the latest Arch mirrorlist.\n"
+            return 1
+        fi
+    fi
+    return 0
+}
+
+Main "$@"
