@@ -1,0 +1,11 @@
+[Trigger]
+Operation = Upgrade
+Type = Package
+Target = virtualbox-host-dkms
+Target = virtualbox-host-modules-arch
+
+[Action]
+Description = Inform user about updating package virtualbox-ext-oracle (on host)
+When = PostTransaction
+Depends = virtualbox
+Exec = /usr/bin/printf "\n==> You may need to run command: yay -Sua virtualbox-ext-oracle\n\n"
